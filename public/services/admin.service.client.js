@@ -6,16 +6,15 @@
     function adminService($http) {
 
         var api = {
-            //getNews: getNews,
+            findPO: findPO,
 
         };
         return api;
 
-        function createNews(news) {
-            var url = "/api/news";
+        function findPO(poNumber) {
+            var url = "/api/po";
             console.log(url);
-            //console.log(news);
-            return $http.post(url, news)
+            return $http.get(url)
                 .then(function (response) {
                     return response.data;
                 }, function (err) {
