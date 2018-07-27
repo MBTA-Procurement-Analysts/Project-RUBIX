@@ -26,4 +26,4 @@ var reqSchema = new mongoose.Schema({
     }]
 },{"collection":"REQ_DATA"});
 
-module.exports = poSchema;
+module.exports = reqSchema;

@@ -99,14 +99,16 @@ function onListening() {
 
 var poModel = require("../database/PO/po-model");
 var reqModel = require("../database/REQ/req-model");
-
-app.get('/api/po', findPO);
+app.get('/api/po/:number', findPO);
 function findPO(req,res){
+  console.log("PO NUMBER: " + req.params.number);
     console.log('wow we made it');
     poModel
-        .findPO("9000005242")
+        .findPO(req.params.number)
         .then(function(val){
             console.log(val);
             res.json(val);
         })
 }
+require("./po-services/po-service-server");
+
