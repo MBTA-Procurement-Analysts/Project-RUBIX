@@ -2,14 +2,14 @@ setwd("C:/Users/noldakowski/WebStormProjects/Rubix/data")
 # This script will convert CSV flat files containing
 # PO data into a nested JSON format and then input it into mongoDB
 library(mongolite)
- library(dplyr)
+library(dplyr)
 library(stringr)
 # Read in the PO header data
-poData <- read.csv("poData.csv", na.strings = c(""," "))
+reqData <- read.csv("reqData.csv", na.strings = c(""," "))
 
 # Connect to the mongo database, collection PO_HDR and insert the data
- dbConnection <- mongo("rubix",collection = "PO_DATA", url="mongodb://127.0.0.1:27017")
- dbConnection$index(add = '{"PO_No": 1}')
+ dbConnection <- mongo("rubix",collection = "REQ_DATA", url="mongodb://127.0.0.1:27017")
+ dbConnection$index(add = '{"Req_No": 1}')
 
 # Update the records in mongo
  pb <- txtProgressBar(min = 0, max = nrow(poData), style = 3)
@@ -20,32 +20,39 @@ poData <- read.csv("poData.csv", na.strings = c(""," "))
    
    str_replace_all(string, "[[:punct:]]^.", "_")
  }
-for(i in 1:nrow(poData)){
-  # In Rubix, the PO number is the key for each record
-  key <- paste0('{"PO_No":"',poData[i,]$PO.No.,'"}')
+for(i in 1:nrow(reqData)){
+  # In Rubix, the Req number is the key for each record
+  key <- paste0('{"REQ_No":"',reqData[i,]$Req.No,'"}')
   # Add the necessary PO information to the record.
-  poValues <- paste0('{"$set":{"Business_Unit":"',
-                  clean(poData[i,]$Business_Unit),
+  reqValues <- paste0('{"$set":{"Business_Unit":"',
+                  clean(reqData[i,]$Business_Unit),
                   '","Status":"',
-                  clean(poData[i,]$Status),
-                  '","PO_Date":"',
-                  clean(poData[i,]$PO.Date),
+                  clean(reqData[i,]$Status),
+                  '","REQ_Date":"',
+                  clean(reqData[i,]$Req.Date),
                   '","Buyer":"',
-                  clean(poData[i,]$Buyer),
+                  clean(reqData[i,]$Buyer),
+                  '","Buyer":"',
+                  clean(reqData[i,]$Buyer),
                   '","Origin":"',
-                  clean(poData[i,]$Origin),
+                  clean(reqData[i,]$Origin),
+                  '","Approved_On":"',
+                  clean(reqData[i,]$Approval_Date),
                   '","Approved_By":"',
-                  clean(poData[i,]$Approved_By),
-                  '","Vendor_Name":"',
-                  clean(poData[i,]$Vendor_Name),
+                  clean(reqData[i,]$Approved_By),
+                  '","Department":{"',
+                  'Number":"',
+                  clean(reqData[i,]$Approved_By),
+                  '"},"Requestor":"',
+                  clean(reqData[i,]$Requestor),
                   '"}}')
   
-  dbConnection$update(key,poValues,upsert = TRUE)
+  dbConnection$update(key,reqValues,upsert = TRUE)
   
   # Add the necessary PO line fields to the database record for the appropriate PO.
   lineValues <- paste('{"$addToSet":{"lines":',
                        '{"Line_No":"',
-                       clean(poData[i,]$PO_Line),
+                       clean(reqData[i,]$Req_Line),
                        '","Mfg_Id":"',
                        clean(poData[i,]$Mfg.ID),
                        '","Mfg_Itm_Id":"',
