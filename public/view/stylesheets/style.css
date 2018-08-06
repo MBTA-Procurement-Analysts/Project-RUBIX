@@ -1,0 +1,16 @@
+body {
+  font-size: 10pt;
+  padding: 10pt;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.tbl-padding>tbody>tr>td, .tbl-padding>tbody>tr>th, .tbl-padding>tfoot>tr>td, .tbl-padding>tfoot>tr>th, .tbl-padding>thead>tr>td, .tbl-padding>thead>tr>th {
+  padding: 4px;
+}
+
+code {
+  color: #000000;
+}

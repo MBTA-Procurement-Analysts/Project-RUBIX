@@ -5,9 +5,12 @@
 
     function adminController(adminService, $routeParams) {//currentUser){
         var model = this;
-        adminService.findPO("10209").then(function(response){
-            console.log(response);
-            }
-        )
+        adminService.getCollections().then(function(response){
+            model.collections = response;
+        })
+        // adminService.findPO("10209").then(function(response){
+        //     console.log(response);
+        //     }
+        // )
     }
 })();

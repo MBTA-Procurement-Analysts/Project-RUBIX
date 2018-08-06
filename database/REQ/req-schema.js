@@ -1,29 +1,51 @@
 var mongoose = require("mongoose");
-var reqSchema = new mongoose.Schema({
-    "PO_No" : String,
-    "Approved_By": String,
-    "Business_Unit": String,
-    "Buyer":String,
-    "Origin":String,
-    "PO_Date": Date,
-    "Status": String,
-    "Vendor_Name": String,
-    "lines": [{
-        "Line_No": Number,
-        "Mfg_Id":String,
-        "Mfg_Itm_Id": String,
-        "Quantity": Number,
-        "Itm_No": String,
-        "Amount": Number,
-        "Taxo_Lvl_1": String,
-        "Taxo_Lvl_2": String,
-        "Quote_Link":String,
-        "Description":String,
-        "Requisition":{
-            "Req_ID": String,
-            "Line_No": Number
-        }
-    }]
-},{"collection":"REQ_DATA"});
+var reqSchema = new mongoose.Schema(
+    {
+        "REQ_No" : String,
+        "Account" : Number,
+        "Approved_By" : String,
+        "Approved_On" : Date,
+        "Business_Unit" : String,
+        "Buyer" : String,
+        "Currency" : String,
+        "Department" : {
+            "Number" : Number,
+            "Description" : String
+        },
+        "Fund" : Number,
+        "Origin" : String,
+        "REQ_Date" : Date,
+        "Requester" : String,
+        "Ship_To" : {
+            "Description" : String,
+            "Address_1" : String,
+            "Address_2" : String,
+            "City" : String,
+            "State" : String,
+            "Zip_Code" : String,
+            "Country" : String
+        },
+        "Status" :String,
+        "lines" : [
+            {
+                "Line_No" :Number,
+                "Unit_Price" : Number,
+                "Line_Total" : Number,
+                "Schedule_No" : Number,
+                "UOM" : String,
+                "Due_Date" : Date,
+                "MFG_ID" : String,
+                "Quantity" : Number,
+                "More_Info" : String,
+                "Item" : String,
+                "Product" : String,
+                "PO" : {
+                    "PO_Number" : String,
+                    "Line_No" : Number
+                }
+            }
+        ]
+    }
+,{"collection":"REQ_DATA"});
 
 module.exports = reqSchema;

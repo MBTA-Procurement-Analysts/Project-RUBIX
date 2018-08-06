@@ -1,0 +1,124 @@
+<head>
+  <meta charset="UTF-8">
+  <title>{{model.title}}</title>
+  <link href="./view/stylesheets/style.css" rel="stylesheet"/>
+</head>
+<div class="container">
+  <div class="row align-baseline py-1">
+    <h4 class="col-5">Requisition of #{{model.REQJSON['REQ_No']}}</h4>
+    <div class="col-7 d-inline-flex justify-content-around">
+      <input type="text" id="reqid_input" ng-model="model.inputReqid" name="reqid" class="form-control mx-1" placeholder="Req Number">
+      <button type="button" class="btn btn-primary mx-1" ng-click="model.filter1()"><i class="fas fa-search mx-1"></i>Search</button>
+      <button type="button" class="btn btn-info mx-1" onclick="window.print()"><i class="fas fa-print mx-1"></i>Print Screen</button>
+    </div>
+  </div>
+
+  <div ng-hide="model.hideTables">
+    <!--The Ship to and Req Metadata Table-->
+    <div class="row justify-content-between">
+      <div class="col-4">
+        <table>
+          <tbody>
+            <tr>
+              <td><b>Ship To:</b></td>
+              <td><b>{{model.REQJSON['Ship_To']['Descr']}}<b></td>
+            </tr>
+            <tr class="border-top">
+              <td />
+                <td>{{model.REQJSON['Ship_To']['Address_1']}}</td>
+            </tr>
+            <tr>
+              <td />
+                <td>{{model.REQJSON['Ship_To']['Address_2']}}</td>
+            </tr>
+            <tr>
+              <td />
+                <td>{{model.REQJSON['Ship_To']['City']}}, {{model.REQJSON['Ship_To']['State']}} 0{{model.REQJSON['Ship_To']['Zip_Code']}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-7">
+        <table class="tbl-padding float-right">
+          <tbody>
+            <tr>
+              <td>Business Unit: </td>
+              <td></td>
+              <td></td>
+              <td><b>{{model.REQJSON['Business_Unit']}}</b></td>
+              <td><b>{{model.REQJSON['Status']}}</b></td>
+            </tr>
+            <tr class="border-top">
+              <td ><b>Req ID</b></td>
+              <td></td>
+              <td></td>
+              <td><b>Date</b></td>
+
+              <td><b>Requester</b></td>
+              <td><b>Currency</b></td>
+
+              <td><b>Fund</b></td>
+              <td><b>Account</b></td>
+              <td><b>Dept</b></td>
+
+            </tr>
+            <tr>
+              <td colSpan="2"><code>{{model.REQJSON['REQ_No']}}</code></td>
+              <td></td>
+              <td>{{model.REQJSON['REQ_Date'] | date: 'MM/dd/yyyy'}}</td>
+              <td>{{model.REQJSON['Requester']}}</td>
+              <td>{{'USD'}}</td>
+              <td>{{"Fund"}}</td>
+              <td><code>{{"Account"}}</code></td>
+              <td><code>{{model.REQJSON['Department']['Number']}}</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Ln/Schd</th>
+              <th>Item</th>
+              <th>Description</th>
+              <th>Mfg ID</th>
+              <th>Quantity</th>
+              <th>UOM</th>
+              <th>Price</th>
+              <th>Extended Amount</th>
+              <th>Due Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="req in model.REQJSON['lines'] | orderBy:'Line_No'">
+              <td>{{req.Line_No}}</td>
+              <td>{{req.Item}}</td>
+              <td>{{req.More_Info}}</td>
+              <td>{{"Mfg_Id"}}</td>
+              <td>{{req.Quantity}}</td>
+              <td>{{req.UOM}}</td>
+              <td>{{"Price"}}</td>
+              <td>{{"Extended Amount"}}</td>
+              <td>{{"Due Date"}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4">
+        Buyer: {{model.REQJSON['Buyer']}}
+      </div>
+      <div class="col-4 offset-4">
+      </div>
+    </div>
+
+
+  </div>
+</div>

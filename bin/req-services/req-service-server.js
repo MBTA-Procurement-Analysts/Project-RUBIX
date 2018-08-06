@@ -1,11 +1,12 @@
-var app = require('../../express');
-var poModel = require("../../database/PO/po-model");
+var app = require('../../app');
+var reqModel = require("../../database/REQ/req-model");
 
-app.get('/api/po', findPO);
-function findPO(req,res){
+app.get('/api/req/:number', findReq);
+function findReq(req,res){
+    console.log("REQ NUMBER: " + req.params.number);
     console.log('wow we made it');
-    poModel
-        .findPO("9000005424")
+    reqModel
+        .findReq(req.params.number)
         .then(function(val){
             console.log(val);
             res.json(val);

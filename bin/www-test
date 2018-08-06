@@ -112,8 +112,5 @@ function onListening() {
 // }
 require("../database/PO/po-model");
 require("../database/REQ/req-model");
-require("../database/ITEM/item-model");
-
 require("./po-services/po-service-server");
 require("./req-services/req-service-server");
-require("./item-services/item-service-server");
