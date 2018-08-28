@@ -1,2 +1,22 @@
-<h1>ADMIN Input Page</h1>
-<select ng-model="selectedCollection" ng-options = "c for c in collections"></select>
+<h1>RUBIX Administration</h1>
+<h2>Data Input Page</h2>
+<select ng-model="selectedOperation" ng-options="o for o in model.operations"
+        ng-change="model.updateView(selectedOperation)">
+    <option value="">Select an Operation</option>
+</select>
+<select ng-hide="model.showCollections" ng-model="selectedCollection" ng-options="c for c in model.collections">
+    <option value="">Select a Collection</option>
+</select>
+<div ng-hide="model.showCollections">
+    <br>
+    <div class="row">
+        <p>Upload a file containing the update lines</p>
+        <br/>
+        <div class="col-md-6">
+            <input type="file" id="fileUpload" name="fileUpload" class="form-control-file"/>
+        </div>
+        <div class="col-md-6">
+            <a ng-submit="model.uploadFile()" class="btn btn-info">Upload File</a>
+        </div>
+    </div>
+</div>

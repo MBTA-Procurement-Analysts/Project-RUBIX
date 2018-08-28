@@ -4,7 +4,7 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #000;
 }
 
 .tbl-padding>tbody>tr>td, .tbl-padding>tbody>tr>th, .tbl-padding>tfoot>tr>td, .tbl-padding>tfoot>tr>th, .tbl-padding>thead>tr>td, .tbl-padding>thead>tr>th {
@@ -13,4 +13,8 @@ a {
 
 code {
   color: #000000;
+}
+
+.btn-link {
+  color: #000
 }

@@ -5,7 +5,7 @@ library(mongolite)
 #library(dplyr)
 library(stringr)
 # Read in the PO header data
-reqData <- read.csv("reqTable_V2.csv", na.strings = c(""," "))
+reqData <- read.csv("reqTable.csv", na.strings = c(""," "))
 
 # Connect to the mongo database, collection PO_HDR and insert the data
  dbConnection <- mongo("rubix",collection = "REQ_DATA", url="mongodb://127.0.0.1:27017")
@@ -28,44 +28,24 @@ for(i in 1:nrow(reqData)){
   reqValues <- paste0('{"$set":{"Business_Unit":"',
                   clean(reqData[i,]$Business_Unit),
                   '","Status":"',
-                  clean(reqData[i,]$REQ_STATUS),
+                  clean(reqData[i,]$Status),
                   '","REQ_Date":"',
                   clean(reqData[i,]$Req.Date),
                   '","Buyer":"',
                   clean(reqData[i,]$Buyer),
-                  '","Currency":"',
-                  clean(reqData[i,]$Currency),
-                  '","Fund":"',
-                  clean(reqData[i,]$Fund),
-                  '","Account":"',
-                  clean(reqData[i,]$Account),
                   '","Origin":"',
                   clean(reqData[i,]$Origin),
                   '","Approved_On":"',
                   clean(reqData[i,]$Approval_Date),
                   '","Approved_By":"',
-                  clean(reqData[i,]$By),
+                  clean(reqData[i,]$Approved_By),
                   '","Department":{"Number":"',
                   clean(reqData[i,]$Dept.Loc),
                   '","Description":"',
-                  clean(reqData[i,]$Descr.1),
+                  clean(reqData[i,]$Description),
                   '"},"Requester":"',
                   clean(reqData[i,]$Requester),
-                  '","Ship_To":{"Description":"',
-                  clean(reqData[i,]$Descr),
-                  '","Address_1":"',
-                  clean(reqData[i,]$Address.1),
-                  '","Address_2":"',
-                  clean(reqData[i,]$Address.2),
-                  '","City":"',
-                  clean(reqData[i,]$City),
-                  '","State":"',
-                  clean(reqData[i,]$St),
-                  '","Zip_Code":"',
-                  clean(reqData[i,]$Postal),
-                  '","Country":"',
-                  clean(reqData[i,]$Cntry),
-                  '"}}}')
+                  '"}}')
   
   dbConnection$update(key,reqValues,upsert = TRUE)
   
@@ -73,18 +53,8 @@ for(i in 1:nrow(reqData)){
   lineValues <- paste0('{"$addToSet":{"lines":',
                        '{"Line_No":"',
                        clean(reqData[i,]$Req_Line),
-                       '","Unit_Price":"',
-                       clean(reqData[i,]$Price),
-                       '","Line_Total":"',
-                       clean(reqData[i,]$Amount),
-                       '","Schedule_No":"',
-                       clean(reqData[i,]$Sched.Num),
                        '","UOM":"',
                        clean(reqData[i,]$UOM),
-                       '","Due_Date":"',
-                       clean(reqData[i,]$Due),
-                       '","MFG_ID":"',
-                       clean(reqData[i,]$Mfg.ID),
                       '","Quantity":"',
                       clean(reqData[i,]$Req.Qty),
                       '","More_Info":"',
@@ -93,10 +63,12 @@ for(i in 1:nrow(reqData)){
                       clean(reqData[i,]$Item),
                       '","Product":"',
                       clean(reqData[i,]$Product),
+                      '","Fund":"',
+                      clean(reqData[i,]$FUND),
                        '","PO":{"PO_Number":"',
                        clean(reqData[i,]$PO.No.),
                        '","Line_No":"',
-                       clean(reqData[i,]$Line),
+                       clean(reqData[i,]$PO_Line),
                        '"}}',
                        '}}')
   dbConnection$update(key,lineValues,upsert = TRUE)
