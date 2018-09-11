@@ -8,16 +8,19 @@
   <div class="row align-baseline py-1">
     <h4 class="col-5">Requisition of #{{model.REQJSON['REQ_No']}}</h4>
     <div class="col-7 justify-content-end">
-      <form ng-submit="model.filter1()" class="d-flex">
+      <form ng-submit="model.redir()" class="d-flex" ng-hide="model.ifIE">
         <input type="text" id="reqid_input" ng-model="model.inputReqid" name="reqid" class="form-control mx-1" placeholder="Req ID" pattern="[_A-Za-z0-9\-]*">
-        <button type="button" class="btn btn-primary mx-1" ng-click="model.filter1()"><i class="fas fa-search mx-1"></i>Search</button>
+        <button type="button" class="btn btn-primary mx-1" ng-click="model.redir()"><i class="fas fa-search mx-1"></i>Search</button>
         <button type="button" class="btn btn-info mx-1" onclick="window.print()"><i class="fas fa-print mx-1"></i>Print</button>
-        <a role="button" class="btn btn-secondary mx-1" ng-href="#!buyeritemsdynamic?reqid={{model.inputReqid}}"><i class="fas fa-th-list mx-1"></i>Dynamic View</a>
+        <!--<a role="button" class="btn btn-secondary mx-1" ng-href="#!buyeritemsdynamic?reqid={{model.inputReqid}}"><i class="fas fa-th-list mx-1"></i>Dynamic View</a>-->
       </form>
     </div>
   </div>
 
   <!--Show this alert if Req Not Found, controlled by bool model.foundData-->
+  <div class="alert alert-danger" ng-hide="! model.ifIE">
+    <b><i class="fas fa-exclamation-circle mr-3"></i>Your browser is not supported. Please use Google Chrome or Firefox for optimal results.</b>
+  </div>
   <div class="alert alert-danger" ng-hide="model.foundData">
     <b><i class="fas fa-exclamation-circle mr-3"></i>Req ID Not Found or Invalid. This tool accepts Req IDs with Letters, Numbers, Dash, and Underscore.</b>
   </div>
@@ -141,23 +144,23 @@
         <div class="card-header py-0" ng-attr-id="{{'heading' + item.Item_No}}">
           <div class="py-0 my-0 d-flex flex-row align-items-center">
             <button class="btn btn-link" type="button" data-toggle="collapse" ng-attr-data-target="{{'#collapse_' + item.Item_No}}"> 
-               <i class="fas fa-angle-double-right mx-1"></i>
+              <i class="fas fa-minus-square mx-1"></i>
             </button>
             <p class="my-0">{{item.Item_No}}: {{item.Item_Description}}</p>
           </div>
         </div>
 
-        <div ng-attr-id="{{'collapse_' + item.Item_No}}" class="collapse"> 
+        <div ng-attr-id="{{'collapse_' + item.Item_No}}" class="collapse show"> 
           <div class="card-body">
             <div class="row">
-              <div class="col-7">
-            <b>Description:</b> {{item.Item_Description}}<br>
-            <b>Item Status:</b> {{item.Status}}<br>
-            <b>Item Group:</b> {{item.Item_Group.Group_Number}}: {{item.Item_Group.Group_Description}}<br>
-            <b>UOM:</b> {{item.UOM}}<br>
-            <b>Added:</b> {{item.Status_Date}}<br>
-              </div>
-              <div class="col-5"> 
+              <div class="col-6">
+                <b>Description:</b> {{item.Item_Description}}<br>
+                <b>Item Status:</b> {{item.Status}}<br>
+                <b>Item Group:</b> {{item.Item_Group.Group_Number}}: {{item.Item_Group.Group_Description}}<br>
+                <b>UOM:</b> {{item.UOM}}<br>
+                <b>Added:</b> {{item.Status_Date}}<br>
+                <hr>
+                <b>Viable Substitute</b>
                 <table class="table table-sm">
                   <thead>
                     <tr>
@@ -166,10 +169,83 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <tr ng-repeat="mfgitem in item.viable_subs">
-                    <td>{{mfgitem.Mfg_ID}}</td>
-                    <td><code>{{mfgitem.Mfg_Item_ID}}</code></td>
-                  </tr>
+                    <tr ng-repeat="mfgitem in item.Viable_Subs">
+                      <td>{{mfgitem.Mfg_ID}}</td>
+                      <td><code>{{mfgitem.Mfg_Item_ID}}</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-6"> 
+                <b>Item Storage Area</b>
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Business Unit</th>
+                      <th>Area</th>
+                      <th>Lvl 1</th>
+                      <th>Lvl 2</th>
+                      <th>Lvl 3</th>
+                      <th>Lvl 4</th>
+                      <th>Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="itemloc in item.Locations">
+                      <td>{{itemloc.Unit}}</td>
+                      <td>{{itemloc.Area}}</td>
+                      <td>{{itemloc.Level_1}}</td>
+                      <td>{{itemloc.Level_2}}</td>
+                      <td>{{itemloc.Level_3}}</td>
+                      <td>{{itemloc.level_4}}</td>
+                      <td align="right">{{itemloc.Qty}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+              <div class="col-12">
+              <b>Warehouse Information</b>
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Biz Unit</th>
+                      <th>Status Current</th>
+                      <th>Util Type</th>
+                      <th>Qty On Hand</th>
+                      <th>Qty Avail.</th>
+                      <th>Reorder Pt</th>
+                      <th>Max Qty</th>
+                      <th>Last Mo Demand</th>
+                      <th>Last Qtr Demand</th>
+                      <th>Last Annu. Demand</th>
+                      <th>Last Price Paid</th>
+                      <th>Last Putaway</th>
+                      <th>No Repl. Flag</th>
+                      <th>Replenish Class</th>
+                      <th>Cost Element</th>
+                      <th>Repl. Lead</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat = "whouseInfo in item.Warehouse_Information">
+                      <td>{{whouseInfo.Unit}}</td>
+                      <td>{{whouseInfo.Status_Current}}</td>
+                      <td>{{whouseInfo.Util_Type}}</td>
+                      <td>{{whouseInfo.Qty_On_Hand}}</td>
+                      <td>{{whouseInfo.Qty_Available}}</td>
+                      <td>{{whouseInfo.Reorder_Point}}</td>
+                      <td>{{whouseInfo.Max_Qty}}</td>
+                      <td>{{whouseInfo.Last_Month_Demand}}</td>
+                      <td>{{whouseInfo.Last_Quarter_Demand}}</td>
+                      <td>{{whouseInfo.Last_Annual_Demand}}</td>
+                      <td>{{whouseInfo.Avg_Price | currency}}</td>
+                      <td>{{whouseInfo.Last_Putaway}}</td>
+                      <td>{{whouseInfo.No_Replenish}}</td>
+                      <td>{{whouseInfo.Replenish_Class}}</td>
+                      <td>{{whouseInfo.Cost_Element}}</td>
+                      <td>{{whouseInfo.Replenish_Lead}}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

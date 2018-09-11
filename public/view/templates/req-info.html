@@ -8,15 +8,18 @@
   <div class="row align-baseline py-1">
     <h4 class="col-5">Requisition of #{{model.REQJSON['REQ_No']}}</h4>
     <div class="col-7 justify-content-end">
-      <form ng-submit="model.filter1()" class="d-flex">
-        <input type="text" id="reqid_input" ng-model="model.inputReqid" name="reqid" class="form-control mx-1" placeholder="Req Number (Letters and Numbers Only)" pattern="[_A-Za-z0-9\-]*">
-        <button type="button" class="btn btn-primary mx-1" ng-click="model.filter1()"><i class="fas fa-search mx-1"></i>Search</button>
-        <a role="button" class="btn btn-info mx-1" ng-href="#!buyeritems?reqid={{model.inputReqid}}"><i class="fas fa-file-invoice mx-1"></i>Print View</a>
+      <form ng-submit="model.redir()" class="d-flex" ng-hide="model.ifIE">
+        <input type="text" id="reqid_input" ng-model="model.inputReqid" name="reqid" class="form-control mx-1" placeholder="Req ID" pattern="[_A-Za-z0-9\-]*">
+        <button type="button" class="btn btn-primary mx-1" ng-click="model.redir()"><i class="fas fa-search mx-1"></i>Search</button>
+        <button type="button" class="btn btn-info mx-1" onclick="window.print()"><i class="fas fa-print mx-1"></i>Print</button>
       </form>
     </div>
   </div>
 
   <!--Show this alert if Req Not Found, controlled by bool model.foundData-->
+  <div class="alert alert-danger" ng-hide="! model.ifIE">
+    <b><i class="fas fa-exclamation-circle mr-3"></i>Your browser is not supported. Please use Google Chrome or Firefox for optimal results.</b>
+  </div>
   <div class="alert alert-danger" ng-hide="model.foundData">
     <b><i class="fas fa-exclamation-circle mr-3"></i>Req ID Not Found or Invalid. This tool accepts Req IDs with Letters, Numbers, Dash, and Underscore.</b>
   </div>
@@ -122,7 +125,7 @@
 
     <div class="row my-0">
       <div class="col-3 offset-1">
-        Buyer: {{model.REQJSON['Buyer']}}
+        Vendor: {{model.REQJSON['VendorID']}}, {{model.REQJSON['VendorName']}}
       </div>
       <div class="col-4 offset-4">
         <b>
@@ -130,89 +133,13 @@
         </b>
       </div>
     </div>
-
+    <div class="row my-1">
+      <div class="col-12">
+        Comments: {{model.REQJSON['ReqComments']}}
+      </div>
+    </div>
     <hr>
 
-    <!-- nav that is not working
-    <div class="row">
-      <div class="col-3">
-        <div class="nav flex-column nav-pills" role="tablist" id="items_pane" ng-repeat="item in model.itemData1"> 
-          <a class="nav-link" ng-attr-id="{{'nav' + item.Item_No}}" data-toggle="pill" role="tab" ng-attr-data-target="{{'#navpane_' + item.Item_No}}">{{item.Item_No}}</a>
-        </div>
-      </div>
-      <div class="col-9">
-        <div class="tab-content" ng-repeat="item in model.itemData1" id="items_paneContent">
-          <div class="tab-pane fade" ng-attr-id="{{'navpane_' + item.Item_No}}" role="tabpanel">{{item.Item_No}}</div>
-        </div>
-      </div>
-    </div>
-    nav end -->
-
-    <div class="accordion" id="accordionExample">
-
-      <div class="card" ng-repeat="item in model.itemData1">
-        <div class="card-header py-0" ng-attr-id="{{'heading' + item.Item_No}}">
-          <div class="py-0 my-0 d-flex flex-row align-items-center">
-            <button class="btn btn-link" type="button" data-toggle="collapse" ng-attr-data-target="{{'#collapse_' + item.Item_No}}"> 
-               <i class="fas fa-angle-double-right mx-1"></i>
-            </button>
-            <p class="my-0">{{item.Item_No}}: {{item.Item_Description}}</p>
-          </div>
-        </div>
-
-        <div ng-attr-id="{{'collapse_' + item.Item_No}}" class="collapse"> 
-          <div class="card-body">
-            <div class="row">
-              <div class="col-6">
-            <b>Description:</b> {{item.Item_Description}}<br>
-            <b>Item Status:</b> {{item.Status}}<br>
-            <b>Item Group:</b> {{item.Item_Group.Group_Number}}: {{item.Item_Group.Group_Description}}<br>
-            <b>UOM:</b> {{item.UOM}}<br>
-            <b>Added:</b> {{item.Status_Date}}<br>
-              </div>
-              <div class="col-6"> 
-                <table class="table table-sm">
-                  <thead>
-                    <tr>
-                      <th>Manufacturer ID</th>
-                      <th>Manufacturer Item ID</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <tr ng-repeat="mfgitem in item.viable_subs">
-                    <td>{{mfgitem.Mfg_ID}}</td>
-                    <td><code>{{mfgitem.Mfg_Item_ID}}</code></td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Bootstrap Accordion  
-      <div class="accordion" id="accordionExample">
-      <div class="card" ng-repeat="item in model.itemData1">
-      <div class="card-header py-0" ng-attr-id="{{'heading' + item.Item_No}}">
-      <div class="py-0 my-0 d-flex flex-row align-items-center">
-      <button class="btn btn-link" type="button" data-toggle="collapse" ng-attr-data-target="{{'#collapse_' + item.Item_No}}"> 
-      <i class="fas fa-angle-double-right mx-1"></i>
-      </button>
-      <p>{{item.Item_No}}: {{item.Item_Description}}</p>
-      </div>
-      </div>
-      <div ng-attr-id="{{'collapse_' + item.Item_No}}" class="collapse"> 
-      <div class="card-body">
-      <b>Description:</b> {{item.Item_Description}}<br>
-      <b>Item Status:</b> {{item.Status}}<br>
-      <b>Item Group:</b> {{item.Item_Group.Group_Number}}: {{item.Item_Group.Group_Description}}<br>
-      <b>UOM:</b> {{item.UOM}}<br>
-      </div>
-      </div>
-      </div>
-      </div>
-      Accordion End -->
 
   </div>
 </div>

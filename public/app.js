@@ -1,3 +1,3 @@
 (function (app) {
-    angular.module('RUBIX', ["ngRoute", 'ngAnimate']);
+  angular.module('RUBIX', ['ngRoute', 'ngAnimate']);
 })();

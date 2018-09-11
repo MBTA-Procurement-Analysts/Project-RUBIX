@@ -1,9 +1,9 @@
 (function () {
   angular
     .module('RUBIX')
-    .controller('buyerItemsController', buyerItemsController)
+    .controller('reqInfoController', reqInfoController)
 
-  function buyerItemsController(getterService, $routeParams) {//currentUser){
+  function reqInfoController(getterService, $routeParams) {//currentUser){
     console.log(navigator.userAgent)
     console.log("v0.3.5 as of 08/13/2018/1 12:22")
     var model = this;
@@ -47,7 +47,7 @@
     this.itemData1 = {}
 
     model.redir = function() {
-      window.location = "#!/buyeritems?reqid=" + model.inputReqid;
+      window.location = "#!/reqinfo?reqid=" + model.inputReqid;
     }
 
     // Obtain REQ from andminService, then clean it a bit

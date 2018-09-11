@@ -21,14 +21,17 @@
       .when('/buyeritems', {
         templateUrl: './view/templates/buyer-items-info.html', 
         controller: 'buyerItemsController', 
-        controllerAs: 'model'})
-      .when('/buyeritemsdynamic', {
-        templateUrl: './view/templates/buyer-items-info-dynamic.html', 
-        controller: 'buyerItemsController', 
-        controllerAs: 'model'})
-      .when('/buyeritemsdynamic/:reqid', {
-        templateUrl: './view/templates/buyer-items-info-dynamic.html', 
-        controller: 'buyerItemsController', 
-        controllerAs: 'model'})
+        controllerAs: 'model'
+      })
+      .when('/reqinfo', {
+        templateUrl: './view/templates/req-info.html', 
+        controller: 'reqInfoController', 
+        controllerAs: 'model'
+      })
+      .when('/reqinfo/:reqid', {
+        templateUrl: './view/templates/req-info.html', 
+        controller: 'reqInfoController', 
+        controllerAs: 'model'
+      })
   }
 })();

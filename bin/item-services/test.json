@@ -1,0 +1,74 @@
+{
+  "_id": ObjectId(
+  "5b631c658ad08d8048dae07e"
+  ),
+  "Item_No": "02545903",
+  "Item_Description": "ANTENNA,TRANSIT( ASP931 ) UHF-",
+  "Item_Group": {
+    "Group_Number": "82",
+    "Group_Description": "NF 40' (Hybrid) (D/E) SR1983"
+  },
+  "Status": "1",
+  "UOM": "EA",
+  "Status_Date": "6/1/2011",
+  "viable_subs": [
+    {
+      "Mfg_ID": "PCTEL INC",
+      "Mfg_Item_ID": "24T0028-007"
+    },
+    {
+      "Mfg_ID": "NF",
+      "Mfg_Item_ID": "236532"
+    }
+  ],
+  "locations": [
+    {
+      "Unit": "BS025",
+      "Area": "C",
+      "Level_1": "34",
+      "Level_2": "F",
+      "Level_3": "1",
+      "Level_4": NaN,
+      "Qty": 10
+    },
+    {
+      "Unit": "BS010",
+      "Area": "C",
+      "Level_1": "66",
+      "Level_2": "J",
+      "Level_3": "1",
+      "Level_4": NaN,
+      "Qty": 0
+    },
+    {
+      "Unit": "BS011",
+      "Area": "CA",
+      "Level_1": "9",
+      "Level_2": "F",
+      "Level_3": "1",
+      "Level_4": "A",
+      "Qty": 1
+    },
+    {
+      "Unit": "CS004",
+      "Area": "E",
+      "Level_1": "17",
+      "Level_2": "M",
+      "Level_3": "3",
+      "Level_4": NaN,
+      "Qty": 6
+    },
+    {
+      "Unit": "BS019",
+      "Area": "O",
+      "Level_1": "54",
+      "Level_2": "A",
+      "Level_3": "1",
+      "Level_4": NaN,
+      "Qty": 4
+    },
+    {
+      "Unit": "BS023",
+      "Area": "S",
+      "Level_1": "14",
+      "Level_2":
